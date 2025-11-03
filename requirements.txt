@@ -1,0 +1,5 @@
+fastmcp==2.13.0.2
+duckduckgo_search
+requests
+beautifulsoup4
+pydantic
