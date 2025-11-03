@@ -1,28 +1,28 @@
+# Use official Python slim image
 FROM python:3.11-slim
 
-# Install system dependencies needed for building and git
-RUN apt-get update && \
-    apt-get install -y git build-essential curl python3-dev && \
-    rm -rf /var/lib/apt/lists/*
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    python3-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
+# Set working directory
 WORKDIR /app
 
-# Clone your repo
+# Clone your GitHub repo
 RUN git clone https://github.com/agonist-inhaler/ddg-mcp.git .
 
-# Install hatch separately
+# Install hatch for build backend (if needed later)
 RUN pip install --no-cache-dir hatch
 
-# Try building the wheel package (you can comment this line to skip wheel build)
-RUN hatch build
+# Install your package in editable mode directly from source
+RUN pip install --no-cache-dir -e .
 
-# Install the built wheel
-RUN pip install --no-cache-dir dist/ddg-mcp-0.3.0-py3-none-any.whl
-
-# Fallback: If you want to skip wheel building, comment out above 2 RUN lines and uncomment below
-# RUN pip install --no-cache-dir -e .
-
+# Expose the port the app runs on
 EXPOSE 8080
 
+# Default command to run the MCP server
 CMD ["ddg-mcp", "--transport", "streamable-http", "--host", "0.0.0.0", "--port", "8080"]
-
