@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir hatch
 RUN pip install --no-cache-dir -e .
 
 # Expose the port the app runs on
-EXPOSE 8080
+EXPOSE 2000
 
 # Default command to run the MCP server
-CMD ["ddg-mcp", "--transport", "streamable-http", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["ddg-mcp", "--transport", "streamable-http", "--host", "0.0.0.0", "--port", "2000"]
